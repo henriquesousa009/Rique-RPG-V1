@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#100e16">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LIFE RPG">
+<link rel="manifest" href="manifest.webmanifest">
+<title>LIFE RPG — Awakening</title>
+<style>
+:root{--bg:#100e16;--panel:#191621;--panel2:#211c2c;--line:#342b40;--text:#f3edf7;--muted:#a99eb4;--gold:#d9b875;--violet:#a78bfa;--red:#b85b70;--green:#82c6a0;--blue:#8aa8dc;--radius:18px}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#352342 0%,#17121f 38%,var(--bg) 72%);color:var(--text);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;padding-bottom:92px}
+button,input,select,textarea{font:inherit}button{cursor:pointer;color:inherit}
+.app{max-width:760px;margin:auto;padding:env(safe-area-inset-top) 16px 24px}
+.top{display:flex;justify-content:space-between;align-items:center;padding:18px 2px 12px}
+.brand{font-size:12px;letter-spacing:.22em;color:var(--gold);font-weight:800}.date{font-size:11px;color:var(--muted);margin-top:3px}
+.avatar{width:42px;height:42px;border-radius:50%;border:1px solid #806b9b;background:linear-gradient(145deg,#483454,#17121e);display:grid;place-items:center;color:#e9d5ff;font-size:20px;box-shadow:0 0 22px #8b5ca833}
+.hero{border:1px solid #55405f;border-radius:24px;padding:18px;background:linear-gradient(125deg,#2c2038dd,#191621 65%),radial-gradient(circle at 85% 10%,#754b7655,transparent 40%);box-shadow:0 16px 45px #0005;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:190px;height:190px;border:1px solid #a78bfa22;border-radius:50%;right:-80px;top:-80px;box-shadow:0 0 0 18px #a78bfa09,0 0 0 38px #a78bfa06}
+.kicker{font-size:10px;letter-spacing:.18em;color:var(--gold);font-weight:800}.hero h1{font-family:Georgia,serif;font-size:27px;letter-spacing:.02em;margin:5px 0 2px}.sub{color:var(--muted);font-size:12px}
+.levelrow{display:flex;justify-content:space-between;align-items:end;margin-top:18px;position:relative;z-index:1}.level{font: bold 34px Georgia,serif;color:#f4dfb3}.xp{font-size:11px;color:var(--muted);text-align:right}
+.bar{height:7px;background:#ffffff12;border-radius:10px;overflow:hidden;margin-top:8px}.fill{height:100%;background:linear-gradient(90deg,#8060bd,var(--gold));border-radius:10px;transition:width .3s}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:13px 0}.stat{background:#191621d9;border:1px solid var(--line);border-radius:15px;padding:11px}.stat b{font:22px Georgia,serif;color:var(--gold);display:block}.stat span{font-size:10px;color:var(--muted);letter-spacing:.08em}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 10px}.sectionhead h2{font:18px Georgia,serif;margin:0}.sectionhead small{color:var(--muted);font-size:10px;letter-spacing:.1em}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card{background:linear-gradient(145deg,#211c2c,#17141e);border:1px solid var(--line);border-radius:17px;padding:13px;min-width:0}.pathhead{display:flex;align-items:center;gap:9px}.sigil{width:35px;height:35px;border-radius:11px;display:grid;place-items:center;background:#ffffff0c;font-size:18px;border:1px solid #ffffff12}.pathname{font-weight:700;font-size:13px}.pathmeta{font-size:10px;color:var(--muted)}.pathxp{font-size:11px;color:var(--gold);margin-top:12px;display:flex;justify-content:space-between}
+.quest{display:flex;gap:11px;align-items:flex-start}.questcheck{width:22px;height:22px;flex:0 0 22px;border-radius:7px;border:1px solid #6e5a83;background:#251d30;display:grid;place-items:center;color:var(--green);margin-top:1px}.quest.done{opacity:.55}.quest.done .questtitle{text-decoration:line-through}.questtitle{font-weight:650;font-size:13px}.questdesc{font-size:11px;color:var(--muted);margin-top:3px}.questfoot{display:flex;justify-content:space-between;margin-top:8px;color:var(--muted);font-size:10px}.pill{border:1px solid #59476b;border-radius:30px;padding:3px 7px;color:#d8c4ed;font-size:9px;letter-spacing:.06em}
+.btn{border:1px solid #655178;background:linear-gradient(110deg,#493354,#30243d);border-radius:12px;padding:10px 13px;color:#f5eaff;font-size:12px;font-weight:700}.btn.secondary{background:#211c2c;border-color:var(--line);color:var(--muted)}.btn.gold{background:linear-gradient(110deg,#80633b,#4c3b2b);border-color:#9c8050;color:#fff0cf}
+.row{display:flex;gap:8px;align-items:center}.spread{justify-content:space-between}.muted{color:var(--muted)}.small{font-size:11px}
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:10;background:#100e16ed;backdrop-filter:blur(18px);border-top:1px solid #382d45;padding:8px 8px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:3px}.nav button{border:0;background:none;color:#82788e;font-size:9px;display:grid;gap:4px;justify-items:center;min-width:62px;padding:5px}.nav button strong{font-size:19px;font-weight:400}.nav button.active{color:var(--gold)}
+.view{display:none}.view.active{display:block}
+.list{display:grid;gap:9px}.logitem{display:flex;justify-content:space-between;gap:12px;align-items:center}.logitem b{font-size:12px}.logitem small{display:block;color:var(--muted);font-size:10px}
+input,select,textarea{width:100%;background:#100e16;border:1px solid #453851;border-radius:10px;color:var(--text);padding:11px;outline:none}label{font-size:11px;color:var(--muted);display:block;margin:10px 0 5px}
+.modal{position:fixed;inset:0;background:#000b;z-index:30;display:none;align-items:end;justify-content:center;padding:12px}.modal.show{display:flex}.sheet{width:100%;max-width:560px;background:#1b1723;border:1px solid #574466;border-radius:22px 22px 15px 15px;padding:18px;max-height:88vh;overflow:auto}.sheet h3{font:21px Georgia,serif;margin:0 0 12px}
+.chart{width:100%;height:150px;display:block}.empty{padding:18px;text-align:center;color:var(--muted);font-size:12px}
+.note{border-left:2px solid var(--violet);padding:9px 12px;background:#a78bfa0c;color:#c9bdd5;font-size:11px;border-radius:0 10px 10px 0}
+@media(min-width:600px){.app{padding-left:24px;padding-right:24px}.cards{grid-template-columns:repeat(3,minmax(0,1fr))}.nav{gap:20px}.nav button{min-width:80px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div><div class="brand">L I F E &nbsp; R P G</div><div class="date" id="today"></div></div><div class="avatar">✦</div></header>
+<section class="hero">
+ <div class="kicker">THE AWAKENING · PERSONAL CHRONICLE</div><h1 id="heroTitle">Your journey begins.</h1><div class="sub">Small actions. A life that gradually takes shape.</div>
+ <div class="levelrow"><div><div class="kicker">OVERALL RANK</div><div class="level" id="level">E · 01</div></div><div class="xp"><b id="xpText">0 / 500 XP</b><div>toward next level</div></div></div>
+ <div class="bar"><div class="fill" id="xpBar" style="width:0%"></div></div>
+</section>
+<div class="stats">
+ <div class="stat"><b id="totalXP">0</b><span>TOTAL XP</span></div><div class="stat"><b id="sessions">0</b><span>LOGGED ACTIONS</span></div><div class="stat"><b id="completed">0</b><span>QUESTS CLAIMED</span></div>
+</div>
+<main>
+<section class="view active" id="dashboard">
+ <div class="sectionhead"><h2>Paths of becoming</h2><small>YOUR SIX DOMAINS</small></div><div class="cards" id="pathCards"></div>
+ <div class="sectionhead"><h2>Today's optional quests</h2><small>CHOOSE WHAT RESONATES</small></div><div class="list" id="dashQuests"></div>
+ <div class="row spread" style="margin-top:12px"><button class="btn secondary" onclick="showView('quests')">All quests</button><button class="btn gold" onclick="openLog()">＋ Record an action</button></div>
+ <div class="sectionhead"><h2>Quest Master's note</h2><small>REFLECTION</small></div><div class="card note" id="advisor">Your first chapter is unwritten. Record an activity and we'll begin shaping your progress.</div>
+</section>
+<section class="view" id="paths">
+ <div class="sectionhead"><h2>Development paths</h2><small>YOUR OWN PACE</small></div><div class="list" id="pathDetails"></div>
+</section>
+<section class="view" id="quests">
+ <div class="sectionhead"><h2>Quest board</h2><small>OPTIONAL · NO PENALTIES</small></div><div class="note">Quests are invitations, not obligations. Skip, adapt or ignore any mission. Nothing decays when you take a break.</div><div class="list" id="allQuests" style="margin-top:12px"></div>
+ <button class="btn secondary" style="width:100%;margin-top:12px" onclick="newQuest()">＋ Add a personal quest</button>
+</section>
+<section class="view" id="backlogs">
+ <div class="sectionhead"><h2>Experience archive</h2><small>GAMES · FILMS · SERIES</small></div><div class="row"><button class="btn" onclick="openMedia('game')">＋ Add game</button><button class="btn secondary" onclick="openMedia('screen')">＋ Add film / series</button></div>
+ <div class="sectionhead"><h2>Gaming backlog</h2><small id="gameCount">0 TITLES</small></div><div class="list" id="games"></div>
+ <div class="sectionhead"><h2>Screen backlog</h2><small id="screenCount">0 TITLES</small></div><div class="list" id="screens"></div>
+</section>
+<section class="view" id="chronicle">
+ <div class="sectionhead"><h2>Chronicle of growth</h2><small>YOUR HISTORY</small></div><div class="card"><div class="row spread"><b>XP earned · last 7 days</b><span class="pill">WEEKLY</span></div><svg class="chart" id="chart" viewBox="0 0 320 145" preserveAspectRatio="none"></svg></div>
+ <div class="sectionhead"><h2>Recent actions</h2><small>THE WORK YOU'VE DONE</small></div><div class="list" id="history"></div>
+ <div class="sectionhead"><h2>Data & backup</h2></div><div class="card"><div class="small muted">Your records are stored in this browser on this device. Export a backup occasionally so your progress is safe.</div><div class="row" style="margin-top:12px"><button class="btn" onclick="exportData()">Export backup</button><button class="btn secondary" onclick="document.getElementById('importFile').click()">Import backup</button><input id="importFile" type="file" accept="application/json" hidden onchange="importData(event)"></div></div>
+</section>
+</main>
+</div>
+<nav class="nav">
+ <button class="active" data-view="dashboard" onclick="showView('dashboard')"><strong>⌂</strong>HOME</button>
+ <button data-view="paths" onclick="showView('paths')"><strong>✧</strong>PATHS</button>
+ <button data-view="quests" onclick="showView('quests')"><strong>⚔</strong>QUESTS</button>
+ <button data-view="backlogs" onclick="showView('backlogs')"><strong>▣</strong>BACKLOG</button>
+ <button data-view="chronicle" onclick="showView('chronicle')"><strong>◈</strong>CHRONICLE</button>
+</nav>
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><div class="sheet" id="sheet"></div></div>
+<script>
+const KEY='life-rpg-awakening-v1';
+const paths=[
+ {id:'guitar',name:'Guitar',icon:'♫',type:'SKILL',color:'#bd8fe0',desc:'Technique, repertoire and musical expression.'},
+ {id:'excel',name:'Excel',icon:'▦',type:'SKILL',color:'#82c6a0',desc:'Spreadsheets, analysis and automation.'},
+ {id:'turkish',name:'Turkish',icon:'あ',type:'SKILL',color:'#e0a0a9',desc:'Vocabulary, comprehension and conversation.'},
+ {id:'physical',name:'Physical',icon:'⚔',type:'BODY',color:'#d9b875',desc:'Strength, conditioning and recovery.'},
+ {id:'gaming',name:'Gaming backlog',icon:'◈',type:'EXPERIENCE',color:'#8aa8dc',desc:'Stories and worlds waiting to be explored.'},
+ {id:'screen',name:'Films & series',icon:'▣',type:'EXPERIENCE',color:'#d69a76',desc:'Stories watched, remembered and enjoyed.'}
+];
+const starterQuests=[
+ {id:'q1',path:'guitar',title:'Return to the strings',desc:'Spend 15–20 minutes with your instrument. Revisit a song or technique you enjoy.',xp:25,tag:'GENTLE'},
+ {id:'q2',path:'excel',title:'One useful discovery',desc:'Learn one Excel feature and try it in a tiny example workbook.',xp:25,tag:'FOCUS'},
+ {id:'q3',path:'turkish',title:'A little more Turkish',desc:'Review 5–10 words or listen to a short piece of Turkish audio.',xp:20,tag:'GENTLE'},
+ {id:'q4',path:'physical',title:'Move with intention',desc:'Complete a workout, mobility session or walk that suits your energy today.',xp:30,tag:'BODY'},
+ {id:'q5',path:'gaming',title:'Continue the adventure',desc:'Play one session of a game you genuinely want to experience. Note a memorable moment.',xp:20,tag:'ENJOY'},
+ {id:'q6',path:'screen',title:'Choose a story',desc:'Watch something from your backlog, without multitasking if you feel like it.',xp:15,tag:'ENJOY'}
+];
+let state=load();
+function fresh(){return {xp:0,logs:[],quests:starterQuests.map(q=>({...q,done:false})),media:[],goals:{},created:new Date().toISOString()}}
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||fresh()}catch(e){return fresh()}}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));render()}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function pathXP(id){return state.logs.filter(l=>l.path===id).reduce((a,l)=>a+(+l.xp||0),0)+state.quests.filter(q=>q.path===id&&q.done).reduce((a,q)=>a+(+q.xp||0),0)}
+function levelFor(xp){return Math.floor(xp/500)+1}
+function rank(l){return l>=20?'S':l>=15?'A':l>=10?'B':l>=5?'C':l>=3?'D':'E'}
+function render(){
+ const total=state.xp||0,level=levelFor(total),into=total%500;
+ document.getElementById('today').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
+ document.getElementById('level').textContent=rank(level)+' · '+String(level).padStart(2,'0');
+ document.getElementById('xpText').textContent=into+' / 500 XP';document.getElementById('xpBar').style.width=(into/5)+'%';
+ document.getElementById('totalXP').textContent=total;document.getElementById('sessions').textContent=state.logs.length;document.getElementById('completed').textContent=state.quests.filter(q=>q.done).length;
+ document.getElementById('heroTitle').textContent=total?'The path is taking shape.':'Your journey begins.';
+ document.getElementById('pathCards').innerHTML=paths.map(p=>{let xp=pathXP(p.id);return `<div class="card"><div class="pathhead"><div class="sigil" style="color:${p.color}">${p.icon}</div><div><div class="pathname">${p.name}</div><div class="pathmeta">${p.type}</div></div></div><div class="pathxp"><span>${xp} XP recorded</span><span>LV ${levelFor(xp)}</span></div><div class="bar"><div class="fill" style="width:${xp%500/5}%;background:${p.color}"></div></div></div>`}).join('');
+ const qs=state.quests.filter(q=>!q.done).slice(0,3);document.getElementById('dashQuests').innerHTML=qs.length?qs.map(questHTML).join(''):'<div class="card empty">No open quests. Add one whenever inspiration strikes.</div>';
+ document.getElementById('allQuests').innerHTML=state.quests.length?state.quests.map(questHTML).join(''):'<div class="card empty">Your quest board is clear.</div>';
+ document.getElementById('pathDetails').innerHTML=paths.map(p=>{let xp=pathXP(p.id),logs=state.logs.filter(l=>l.path===p.id);return `<div class="card"><div class="pathhead"><div class="sigil" style="color:${p.color}">${p.icon}</div><div style="flex:1"><div class="pathname">${p.name}</div><div class="pathmeta">${p.desc}</div></div><span class="pill">LV ${levelFor(xp)}</span></div><div class="pathxp"><span>${xp} XP · ${logs.length} recorded actions</span><span>${rank(levelFor(xp))} RANK</span></div><div class="bar"><div class="fill" style="width:${xp%500/5}%;background:${p.color}"></div></div><div class="row" style="margin-top:12px"><button class="btn secondary" onclick="openLog('${p.id}')">＋ Log progress</button><button class="btn secondary" onclick="editGoal('${p.id}')">Set milestone</button></div>${state.goals[p.id]?`<div class="small muted" style="margin-top:9px">NEXT MILESTONE: ${esc(state.goals[p.id])}</div>`:''}</div>`}).join('');
+ const games=state.media.filter(m=>m.kind==='game'),screens=state.media.filter(m=>m.kind==='screen');
+ document.getElementById('games').innerHTML=mediaHTML(games);document.getElementById('screens').innerHTML=mediaHTML(screens);
+ document.getElementById('gameCount').textContent=games.length+' TITLES';document.getElementById('screenCount').textContent=screens.length+' TITLES';
+ document.getElementById('history').innerHTML=state.logs.slice().reverse().slice(0,25).map(l=>`<div class="card logitem"><div><b>${esc(l.title)}</b><small>${esc(pathName(l.path))} · ${new Date(l.date).toLocaleDateString()}</small></div><span class="pill">+${l.xp} XP</span></div>`).join('')||'<div class="card empty">Your first recorded action will appear here.</div>';
+ document.getElementById('advisor').textContent=advisorText();
+ drawChart();
+}
+function pathName(id){return paths.find(p=>p.id===id)?.name||id}
+function questHTML(q){return `<div class="card quest ${q.done?'done':''}"><button class="questcheck" onclick="toggleQuest('${q.id}')" aria-label="Complete quest">${q.done?'✓':''}</button><div style="flex:1"><div class="row spread"><div class="questtitle">${esc(q.title)}</div><span class="pill">+${q.xp} XP</span></div><div class="questdesc">${esc(q.desc)}</div><div class="questfoot"><span>${esc(pathName(q.path))}</span><span>${esc(q.tag||'OPTIONAL')}</span></div></div></div>`}
+function mediaHTML(items){return items.length?items.map(m=>`<div class="card logitem"><div><b>${esc(m.title)}</b><small>${esc(m.status||'Planned')}${m.note?' · '+esc(m.note):''}</small></div><div class="row"><button class="btn secondary" onclick="cycleMedia('${m.id}')">↻</button><button class="btn secondary" onclick="removeMedia('${m.id}')">×</button></div></div>`).join(''):'<div class="card empty">Nothing here yet. Add something you want to experience.</div>'}
+function advisorText(){if(!state.logs.length)return 'Your first chapter is unwritten. Record an activity and we’ll begin shaping your progress. No streaks, no penalties—just a record of what matters to you.';let last=state.logs[ state.logs.length-1 ];return `Your latest recorded step was "${last.title}" in ${pathName(last.path)}. You have logged ${state.logs.length} actions and earned ${state.xp} XP. Look for a small next step that feels interesting—not obligatory.`}
+function toggleQuest(id){let q=state.quests.find(q=>q.id===id);if(!q)return;q.done=!q.done;if(q.done){state.xp+=q.xp;state.logs.push({id:crypto.randomUUID(),path:q.path,title:'Quest: '+q.title,xp:q.xp,date:new Date().toISOString()})}else{state.xp=Math.max(0,state.xp-q.xp);let i=state.logs.findIndex(l=>l.title==='Quest: '+q.title);if(i>=0)state.logs.splice(i,1)}save()}
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));window.scrollTo(0,0)}
+function openModal(content){document.getElementById('sheet').innerHTML=content;document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function openLog(path='guitar'){openModal(`<h3>Record an action</h3><div class="small muted">Give the time you spent a place in your chronicle.</div><form onsubmit="addLog(event)"><label>Progression path</label><select name="path">${paths.map(p=>`<option value="${p.id}" ${p.id===path?'selected':''}>${p.name}</option>`).join('')}</select><label>What did you do?</label><input name="title" placeholder="e.g. Practised chord transitions" required><label>Time invested (optional)</label><input name="minutes" type="number" min="0" placeholder="Minutes"><label>XP reward</label><input name="xp" type="number" min="0" max="500" value="20" required><label>Notes / reflection (optional)</label><textarea name="note" rows="2" placeholder="What felt easier? What did you discover?"></textarea><button class="btn gold" style="width:100%;margin-top:15px">Save to chronicle</button></form>`)}
+function addLog(e){e.preventDefault();let f=new FormData(e.target),xp=+f.get('xp');state.logs.push({id:crypto.randomUUID(),path:f.get('path'),title:f.get('title'),minutes:+f.get('minutes')||0,note:f.get('note'),xp,date:new Date().toISOString()});state.xp+=xp;closeModal();save()}
+function newQuest(){openModal(`<h3>Create a quest</h3><form onsubmit="addQuest(event)"><label>Quest title</label><input name="title" required placeholder="A small meaningful next step"><label>Path</label><select name="path">${paths.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select><label>Description</label><textarea name="desc" rows="2" placeholder="What would completing this look like?"></textarea><label>XP</label><input name="xp" type="number" min="1" max="500" value="25"><button class="btn gold" style="width:100%;margin-top:15px">Add to quest board</button></form>`)}
+function addQuest(e){e.preventDefault();let f=new FormData(e.target);state.quests.push({id:crypto.randomUUID(),title:f.get('title'),path:f.get('path'),desc:f.get('desc'),xp:+f.get('xp'),tag:'PERSONAL',done:false});closeModal();save()}
+function editGoal(id){openModal(`<h3>Next milestone · ${pathName(id)}</h3><form onsubmit="saveGoal(event,'${id}')"><label>What would you like to work towards?</label><textarea name="goal" rows="3" placeholder="e.g. Play a full song smoothly from memory">${esc(state.goals[id]||'')}</textarea><button class="btn gold" style="width:100%;margin-top:15px">Save milestone</button></form>`)}
+function saveGoal(e,id){e.preventDefault();state.goals[id]=new FormData(e.target).get('goal');closeModal();save()}
+function openMedia(kind){let label=kind==='game'?'game':'film or series';openModal(`<h3>Add to your ${kind==='game'?'gaming':'screen'} backlog</h3><form onsubmit="addMedia(event,'${kind}')"><label>Title</label><input name="title" required placeholder="Name of the ${label}"><label>Status</label><select name="status"><option>Planned</option><option>In progress</option><option>Completed</option><option>On hold</option></select><label>Optional note</label><input name="note" placeholder="Platform, season, why it's on your list"><button class="btn gold" style="width:100%;margin-top:15px">Add to backlog</button></form>`)}
+function addMedia(e,kind){e.preventDefault();let f=new FormData(e.target);state.media.push({id:crypto.randomUUID(),kind,title:f.get('title'),status:f.get('status'),note:f.get('note')});closeModal();save()}
+function cycleMedia(id){let m=state.media.find(x=>x.id===id);if(!m)return;let states=['Planned','In progress','Completed','On hold'];m.status=states[(states.indexOf(m.status)+1)%states.length];save()}
+function removeMedia(id){state.media=state.media.filter(x=>x.id!==id);save()}
+function drawChart(){let svg=document.getElementById('chart');let days=[];for(let i=6;i>=0;i--){let d=new Date();d.setDate(d.getDate()-i);days.push(d)}let vals=days.map(d=>state.logs.filter(l=>new Date(l.date).toDateString()===d.toDateString()).reduce((a,l)=>a+l.xp,0));let max=Math.max(40,...vals);let pts=vals.map((v,i)=>[25+i*45,112-v/max*85]);let poly=pts.map(p=>p.join(',')).join(' ');svg.innerHTML=`<line x1="15" y1="112" x2="305" y2="112" stroke="#51445d"/><polyline points="${poly}" fill="none" stroke="#c3a0ed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="#dfc17f"/><text x="${p[0]}" y="135" fill="#a99eb4" font-size="9" text-anchor="middle">${['S','M','T','W','T','F','S'][days[i].getDay()]}</text>`).join('')}`}
+function exportData(){let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='life-rpg-backup.json';a.click();URL.revokeObjectURL(a.href)}
+function importData(e){let file=e.target.files[0];if(!file)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!Array.isArray(x.logs)||!Array.isArray(x.quests))throw Error();state=x;save();alert('Backup restored.')}catch(err){alert('That backup file could not be read.')}};r.readAsText(file)}
+render();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
